@@ -1,24 +1,25 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import cors from 'cors'; // Asegúrate de importar cors
+import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import reportesRouter from './routes/reportes.js';
 
-// Configurar dotenv para variables de entorno
 dotenv.config();
 
 const app = express();
 
-// Habilitar CORS correctamente
-const allowedOrigins = ['https://ro-client-gamma.vercel.app'];
+// Habilitar CORS de forma global
+app.use(cors());
 
-app.use(cors({
-    origin: allowedOrigins,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// También puedes hacer esto manualmente si sigue fallando:
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*"); // Permitir todas las solicitudes
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+});
 
 // Obtener __dirname en ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -36,7 +37,6 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('✅ Conectado a MongoDB'))
     .catch(err => console.error('❌ Error al conectar a MongoDB:', err));
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
