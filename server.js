@@ -10,16 +10,13 @@ dotenv.config();
 
 const app = express();
 
-// Habilitar CORS de forma global
-app.use(cors());
-
-// También puedes hacer esto manualmente si sigue fallando:
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*"); // Permitir todas las solicitudes
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    next();
-});
+// Configuración de CORS (permitiendo solo el frontend en Vercel)
+const corsOptions = {
+    origin: "https://ro-client-gamma.vercel.app", // Solo permite solicitudes desde el frontend
+    methods: "GET, POST, PUT, DELETE, OPTIONS",
+    allowedHeaders: "Content-Type, Authorization",
+};
+app.use(cors(corsOptions));
 
 // Obtener __dirname en ES Modules
 const __filename = fileURLToPath(import.meta.url);
