@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors'; // Importar cors
 import path from 'path';
 import { fileURLToPath } from 'url';
 import reportesRouter from './routes/reportes.js';
@@ -27,6 +28,12 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch(err => console.error('❌ Error al conectar a MongoDB:', err));
 
 // Middleware
+app.use(cors({
+    origin: "https://ro-client-gamma.vercel.app", // Cambia esto por la URL de tu frontend
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization"
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -39,4 +46,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
 });
-
