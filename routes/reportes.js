@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-const { crearReporte, obtenerReportes, updateReporte, deleteReporte } = import('../controllers/reporteController');
+import { crearReporte, obtenerReportes, updateReporte, deleteReporte } from '../controllers/reporteController.js'; // Asegúrate de agregar '.js'
 
 // Ruta para obtener todos los reportes
 router.get('/', obtenerReportes);
@@ -8,21 +8,11 @@ router.get('/', obtenerReportes);
 // Ruta para crear un nuevo reporte
 router.post('/', crearReporte);
 
+// Ruta para actualizar un reporte
 router.put('/:id', updateReporte); // Cambié la ruta para que no repita /reportes
 
-router.delete('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const deletedReporte = await Reporte.findByIdAndDelete(id);
-        if (!deletedReporte) {
-            return res.status(404).json({ message: 'Reporte no encontrado' });
-        }
-        res.json({ message: 'Reporte eliminado con éxito' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error al eliminar el reporte', error });
-    }
-});
+// Ruta para eliminar un reporte
+router.delete('/:id', deleteReporte); // Usa la función deleteReporte desde el controlador
 
 // Exporta el router como default
 export default router;
-
