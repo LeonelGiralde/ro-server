@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const ReporteSchema = new mongoose.Schema({
     fecha: { type: String, required: true },
     reportes: [{
