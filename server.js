@@ -6,11 +6,12 @@ require('dotenv').config();
 const app = express();
 
 // Middlewares
-app.use(express.json()); // Asegurar que Express pueda manejar JSON
+app.use(express.json()); // Para que Express pueda manejar JSON
+
 app.use(cors({
-  origin: "*", // Reemplaza "*" por la URL de tu frontend en producción si es necesario
-  methods: "GET,POST,PUT,DELETE,OPTIONS",
-  allowedHeaders: "Content-Type, Authorization"
+  origin: 'https://ro-client.vercel.app', // Cambia "*" por la URL de tu frontend en producción
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type, Authorization'
 }));
 
 // Conectar a MongoDB
