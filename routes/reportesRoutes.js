@@ -2,6 +2,10 @@ const express = require('express');
 const Reporte = require('../models/Reporte'); // Asegúrate de que el modelo esté bien definido
 const router = express.Router();
 
+const cors = require('cors');
+
+router.use(cors()); // Asegurar CORS en las rutas
+
 // Crear un nuevo reporte
 router.post('/', async (req, res) => {
     try {
