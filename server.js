@@ -8,11 +8,12 @@ const app = express();
 // Middlewares
 app.use(express.json()); // Para que Express pueda manejar JSON
 
-app.use(cors({
-  origin: 'https://ro-client.vercel.app', // Cambia "*" por la URL de tu frontend en producción
-  methods: 'GET,POST,PUT,DELETE,OPTIONS',
-  allowedHeaders: 'Content-Type, Authorization'
-}));
+app.use((req, res,next)=>{
+    res.append('Access-Control-Allow-Origin', ['*']);
+    res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.append('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+})
 
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGO_URI)
