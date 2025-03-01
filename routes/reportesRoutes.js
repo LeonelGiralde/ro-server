@@ -1,94 +1,83 @@
-import { connectToDatabase } from '../config/db.js';
-import { ObjectId } from 'mongodb';
+const express = require("express");
+const Reporte = require("../models/Reportegit"); // Asegúrate de que este modelo está definido correctamente
+const router = express.Router();
 
-// Función para obtener la base de datos
-const getDB = async () => {
-    const client = await connectToDatabase();
-    return client.db('ReporteOlas'); // Cambia esto por el nombre real de tu BD
-};
+router.use(express.json());
 
-// Crear un reporte
-export const crearReporte = async (req, res) => {
+// Crear un nuevo reporte
+router.post("/", async (req, res) => {
     try {
-        const db = await getDB();
-        const collection = db.collection('reportes'); 
-
-        const nuevoReporte = req.body;
-
-        // Validar datos
-        if (!nuevoReporte.title || !nuevoReporte.content) {
-            return res.status(400).json({ message: 'Título y contenido son requeridos' });
-        }
-
-        const result = await collection.insertOne(nuevoReporte);
-
-        res.status(201).json({ message: 'Reporte creado con éxito', result });
+        const { fecha, reportes } = req.body;
+        const nuevoReporte = new Reporte({ fecha, reportes });
+        await nuevoReporte.save();
+        res.status(201).json({ message: "Reporte guardado correctamente", reporte: nuevoReporte });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al crear el reporte', error });
+        res.status(500).json({ error: "Error al guardar el reporte" });
     }
-};
+});
 
 // Obtener todos los reportes
-export const obtenerReportes = async (req, res) => {
+router.get("/", async (req, res) => {
     try {
-        const db = await getDB();
-        const collection = db.collection('reportes');
-
-        const reportes = await collection.find().toArray();
-        res.status(200).json(reportes);
+        const reportes = await Reporte.find();
+        res.json(reportes);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al obtener los reportes', error });
+        res.status(500).json({ error: "Error al obtener los reportes" });
     }
-};
+});
 
-// Actualizar un reporte
-export const updateReporte = async (req, res) => {
+// Obtener reportes por fecha
+router.get("/:fecha", async (req, res) => {
     try {
-        const db = await getDB();
-        const collection = db.collection('reportes');
+        const { fecha } = req.params;
+        const reporte = await Reporte.findOne({ fecha });
 
-        const { id } = req.params;
-        const updateData = req.body;
-
-        // Validar datos
-        if (!updateData.title && !updateData.content) {
-            return res.status(400).json({ message: 'Se requiere al menos un campo para actualizar' });
+        if (!reporte) {
+            return res.status(404).json({ message: "No hay reportes para esta fecha" });
         }
 
-        const result = await collection.updateOne(
-            { _id: new ObjectId(id) },
-            { $set: updateData }
+        res.json(reporte);
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener el reporte" });
+    }
+});
+
+// Actualizar un reporte por fecha
+router.put("/:fecha", async (req, res) => {
+    try {
+        const { fecha } = req.params;
+        const { reportes } = req.body;
+
+        const reporteActualizado = await Reporte.findOneAndUpdate(
+            { fecha },
+            { reportes },
+            { new: true }
         );
 
-        if (result.modifiedCount === 0) {
-            return res.status(404).json({ message: 'Reporte no encontrado' });
+        if (!reporteActualizado) {
+            return res.status(404).json({ error: "Reporte no encontrado" });
         }
 
-        res.status(200).json({ message: 'Reporte actualizado con éxito' });
+        res.json(reporteActualizado);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al actualizar el reporte', error });
+        res.status(500).json({ error: "Error al actualizar el reporte" });
     }
-};
+});
 
-// Eliminar un reporte
-export const deleteReporte = async (req, res) => {
+// Eliminar un reporte por fecha
+router.delete("/:fecha", async (req, res) => {
     try {
-        const db = await getDB();
-        const collection = db.collection('reportes');
+        const { fecha } = req.params;
+        const reporteEliminado = await Reporte.findOneAndDelete({ fecha });
 
-        const { id } = req.params;
-        const result = await collection.deleteOne({ _id: new ObjectId(id) });
-
-        if (result.deletedCount === 0) {
-            return res.status(404).json({ message: 'Reporte no encontrado' });
+        if (!reporteEliminado) {
+            return res.status(404).json({ error: "Reporte no encontrado" });
         }
 
-        res.status(200).json({ message: 'Reporte eliminado con éxito' });
+        res.json({ message: "Reporte eliminado correctamente" });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al eliminar el reporte', error });
+        res.status(500).json({ error: "Error al eliminar el reporte" });
     }
-};
+});
+
+module.exports = router;

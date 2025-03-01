@@ -12,9 +12,11 @@ app.use((req, _res, next) => {
 });
 
 // Configurar CORS para permitir solicitudes desde cualquier origen
-
-app.use(cors()); // Permite solicitudes desde cualquier dominio
-
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"]
+}));
 
 // Middleware para parsear JSON
 app.use(express.json());
