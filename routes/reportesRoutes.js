@@ -16,6 +16,7 @@ router.post("/", async (req, res) => {
     }
 });
 
+
 // Obtener todos los reportes
 router.get("/", async (req, res) => {
     try {
