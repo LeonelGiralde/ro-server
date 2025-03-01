@@ -11,7 +11,7 @@ const getDB = async () => {
 export const crearReporte = async (req, res) => {
     try {
         const db = await getDB();
-        const collection = db.collection('reportes'); // Cambia 'reportes' por tu colección real
+        const collection = db.collection('reportes'); 
 
         const nuevoReporte = req.body;
 

@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
 });
 
 // Obtener todos los reportes
-router.get('/', async (req, res) => {
+router.get('/', async (_req, res) => {
     try {
         const reportes = await Reporte.find();
         res.json(reportes);
