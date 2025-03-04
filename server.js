@@ -5,11 +5,6 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware para depuración de CORS
-app.use((req, _res, next) => {
-  console.log(`Solicitud recibida desde: ${req.headers.origin || 'Directa (sin navegador)'}`);
-  next();
-});
 
 // Configurar CORS para permitir el acceso desde el cliente
 app.use(cors({

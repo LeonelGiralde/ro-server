@@ -36,9 +36,7 @@ router.get("/:fecha", async (req, res) => {
         const { fecha } = req.params;
         const reporte = await Reporte.findOne({ fecha });
 
-        if (!reporte) {
-            return res.status(404).json({ message: "No hay reportes para esta fecha" });
-        }
+        
 
         res.json(reporte);
     } catch (error) {
