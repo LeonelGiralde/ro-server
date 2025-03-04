@@ -26,6 +26,9 @@ router.get("/", async (req, res) => {
     }
 });
 
+
+
+
 // Obtener reportes por fecha
 router.get("/:fecha", async (req, res) => {
     try {
