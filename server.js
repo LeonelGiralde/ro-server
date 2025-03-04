@@ -6,18 +6,8 @@ require('dotenv').config();
 const app = express();
 
 
-// Configurar CORS para permitir el acceso desde el cliente
-app.use(cors({
-  origin: 'https://ro-client.vercel.app', // Permitir solo este dominio
-  methods: ['GET, DELETE, POST, PUT, OPTIONS'], // Métodos permitidos
-  allowedHeaders: ['Content-Type', 'Authorization'] // Cabeceras permitidas
-}));
 
-// Middleware para parsear JSON
-app.use(express.json());
-
-// Maneja la solicitud OPTIONS (Preflight)
-app.options('*', cors());  // Responde a todas las solicitudes OPTIONS
+app.use(cors()); // Permitir todas las solicitudes sin restricciones
 
 
 // Conectar a MongoDB
