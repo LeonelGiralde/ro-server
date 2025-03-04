@@ -1,5 +1,5 @@
 const express = require("express");
-const Reporte = require("../models/Reportegit"); // Asegúrate de que este modelo está definido correctamente
+const Reporte = require("../models/Reporte.js"); // Asegúrate de que este modelo está definido correctamente
 const router = express.Router();
 
 router.use(express.json());

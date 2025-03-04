@@ -13,9 +13,10 @@ app.use((req, _res, next) => {
 
 // Configurar CORS para permitir solicitudes desde cualquier origen
 app.use(cors({
-    origin: "*",
+    origin: ["https://ro-client.vercel.app/", "https://ro-client.vercel.app/form-rep", "https://ro-client.vercel.app/form-nov"],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type"]
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
 }));
 
 // Middleware para parsear JSON
