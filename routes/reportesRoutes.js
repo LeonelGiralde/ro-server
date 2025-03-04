@@ -16,16 +16,17 @@ router.post("/", async (req, res) => {
     }
 });
 
-// Obtener todos los reportes
-router.get("/", async (req, res) => {
-    try {
-        const reportes = await Reporte.find();
-        res.json(reportes);
-    } catch (error) {
-        res.status(500).json({ error: "Error al obtener los reportes" });
-    }
-});
-
+// Ruta para obtener todos los reportes
+router.get('/', (req, res) => {
+    res.json({ message: "Aquí están los reportes" });
+  });
+  
+  
+  // Ruta para obtener un reporte específico por ID
+router.get('/:id', (req, res) => {
+    const { id } = req.params;
+    res.json({ message: `Reporte con ID ${id}` });
+  });
 
 
 

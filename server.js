@@ -14,11 +14,16 @@ app.use((req, _res, next) => {
 // Configurar CORS para permitir el acceso desde el cliente
 app.use(cors({
   origin: 'https://ro-client.vercel.app', // Permitir solo este dominio
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  methods: ['GET, DELETE, POST, PUT, OPTIONS'], // Métodos permitidos
   allowedHeaders: ['Content-Type', 'Authorization'] // Cabeceras permitidas
 }));
+
 // Middleware para parsear JSON
 app.use(express.json());
+
+// Maneja la solicitud OPTIONS (Preflight)
+app.options('*', cors());  // Responde a todas las solicitudes OPTIONS
+
 
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGO_URI)
