@@ -5,10 +5,7 @@ require('dotenv').config();
 
 const app = express();
 
-
-
 app.use(cors()); // Permitir todas las solicitudes sin restricciones
-
 
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGO_URI)
