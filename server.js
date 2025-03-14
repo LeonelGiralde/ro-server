@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const reportesRoutes = require('./routes/reportesRoutes'); // Importa el archivo de rutas
 
+require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -20,4 +21,12 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
+
+const cors = require("cors");
+
+app.use(cors({
+    origin: "https://ro-client.vercel.app", // Permitir solicitudes solo desde el frontend
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"]
+}));
 
