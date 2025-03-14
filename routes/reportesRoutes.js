@@ -7,42 +7,44 @@ const getDB = async () => {
     return client.db('ReporteOlas'); // Cambia esto por el nombre real de tu BD
 };
 
-// Crear un reporte
-export const crearReporte = async (req, res) => {
-    try {
-        const db = await getDB();
-        const collection = db.collection('reportes'); 
-
-        const nuevoReporte = req.body;
-
-        // Validar datos
-        if (!nuevoReporte.title || !nuevoReporte.content) {
-            return res.status(400).json({ message: 'Título y contenido son requeridos' });
-        }
-
-        const result = await collection.insertOne(nuevoReporte);
-
-        res.status(201).json({ message: 'Reporte creado con éxito', result });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al crear el reporte', error });
-    }
-};
-
 // Obtener todos los reportes
-export const obtenerReportes = async (req, res) => {
-    try {
-        const db = await getDB();
-        const collection = db.collection('reportes');
+async function obtenerReportes() {
+    const conexion = await fetch("https://ro-server-55omirja4-leonels-projects-bc6284c9.vercel.app/api/reportes")
+    const conexionConvertida = conexion.json();
 
-        const reportes = await collection.find().toArray();
-        res.status(200).json(reportes);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al obtener los reportes', error });
-    }
-};
+    return conexionConvertida
+}
+// Crear un reporte
+{/*async function crearReporte(reportes) {
+    const conexion = await fetch("https://ro-server-55omirja4-leonels-projects-bc6284c9.vercel.app/api/reportes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            ubicacion: { type: String, required: true },
+            noReporte: { type: Boolean, default: false },
+            mareaAlta: { type: String, default: null },
+            mareaBaja: { type: String, default: null },
+            puntuacion: { type: Number, default: null },
+            tempMax: { type: Number, default: null },
+            tempMin: { type: Number, default: null },
+            clima: { type: String, default: null },
+            tempMar: { type: Number, default: null },
+            dirViento: { type: String, default: null },
+            velocidadViento: { type: String, default: null },
+            dirSwell: { type: String, default: null },
+            olaPeriodo: { type: String, default: null },
+            descripcion: { type: String, default: null },
 
+        })
+    });
+    const conexionConvertida = conexion.json();
+    return conexionConvertida;
+}
+*/}
+
+/*
 // Actualizar un reporte
 export const updateReporte = async (req, res) => {
     try {
@@ -91,4 +93,4 @@ export const deleteReporte = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Error al eliminar el reporte', error });
     }
-};
+};*/

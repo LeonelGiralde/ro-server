@@ -5,19 +5,7 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware para depuración de CORS
-app.use((req, _res, next) => {
-  console.log(`Solicitud recibida desde: ${req.headers.origin || 'Directa (sin navegador)'}`);
-  next();
-});
-
-// Configurar CORS para permitir solicitudes desde cualquier origen
-
 app.use(cors()); // Permite solicitudes desde cualquier dominio
-
-
-// Middleware para parsear JSON
-app.use(express.json());
 
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGO_URI)
